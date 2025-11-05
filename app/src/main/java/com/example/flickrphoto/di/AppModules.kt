@@ -1,5 +1,6 @@
 package com.example.flickrphoto.di
 
+import com.example.flickrphoto.feature.photodetails.PhotoDetailsViewModel
 import com.example.flickrphoto.feature.photosearch.PhotoSearchViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModelOf
@@ -12,4 +13,5 @@ val appModule: Module
 
 val viewModelModules = module {
     viewModelOf(::PhotoSearchViewModel)
+    viewModelOf(::PhotoDetailsViewModel)
 }
