@@ -11,11 +11,10 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Icon
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -101,23 +100,18 @@ fun PhotoSearchScreen(
         ) {
             when (val state = viewState) {
                 is ViewState.Success -> {
-                    PhotoGrid(
-                        photos = state.data,
-                        onPhotoClick = onPhotoClick,
-                    )
+                    if (state.data.isEmpty()) {
+                        PhotoSearchEmptyState(message = stringResource(R.string.photo_search_no_results_text))
+                    } else {
+                        PhotoGrid(
+                            photos = state.data,
+                            onPhotoClick = onPhotoClick,
+                        )
+                    }
                 }
 
                 is ViewState.Idle -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(R.string.photo_search_empty_state_text),
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                    }
+                    PhotoSearchEmptyState(message = stringResource(R.string.photo_search_empty_state_text))
                 }
 
                 is ViewState.Loading -> {
