@@ -1,0 +1,30 @@
+package com.example.domain.mapper
+
+import com.example.data.service.flickr.dto.PhotoDto
+import com.example.data.service.flickr.dto.PhotosDto
+import com.example.data.service.flickr.dto.PhotosResponseDto
+import com.example.domain.models.Photo
+import com.example.domain.models.Photos
+import com.example.domain.models.PhotosResponse
+
+fun PhotosResponseDto.toModel(): PhotosResponse =
+    PhotosResponse(
+        photos = photosDto.toModel()
+    )
+
+fun PhotosDto.toModel(): Photos =
+    Photos(
+        page = page,
+        pages = pages,
+        perPage = perPage,
+        total = total,
+        photoList = photoDto.map { it.toModel() }
+    )
+
+fun PhotoDto.toModel(): Photo =
+    Photo(
+        id = id,
+        title = title,
+        imageUrl = getPhotoUrl(),
+        secret = secret
+    )
