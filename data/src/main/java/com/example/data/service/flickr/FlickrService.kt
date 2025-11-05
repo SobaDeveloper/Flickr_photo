@@ -7,7 +7,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface FlickrService {
-    
+
     /**
      * Get recent photos
      * Docs: https://www.flickr.com/services/api/flickr.photos.getRecent.html
