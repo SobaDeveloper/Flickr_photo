@@ -1,5 +1,7 @@
 package com.example.domain.usecase
 
+import com.example.domain.models.Photo
+import com.example.domain.models.Photos
 import com.example.domain.models.PhotosResponse
 import com.example.domain.repo.PhotosRepository
 import io.mockk.coEvery
@@ -23,13 +25,22 @@ class GetRecentPhotosTest {
 
     @Test
     fun testGetRecentPhotosSuccess() = runTest {
-        val expectedPhotos = mockk<PhotosResponse>()
-        coEvery { repository.getRecentPhotos(perPage = 20, page = 1) } returns Result.success(expectedPhotos)
+        val mockPhotos = listOf(mockk<Photo>())
+        val photosResponse = PhotosResponse(
+            photos = Photos(
+                page = 1,
+                pages = 1,
+                perPage = 20,
+                total = 1,
+                photoList = mockPhotos
+            )
+        )
+        coEvery { repository.getRecentPhotos(perPage = 20, page = 1) } returns Result.success(photosResponse)
 
         val result = getRecentPhotos(perPage = 20, page = 1)
 
         assertTrue(result.isSuccess)
-        assertEquals(expectedPhotos, result.getOrNull())
+        assertEquals(mockPhotos, result.getOrNull())
     }
 
     @Test

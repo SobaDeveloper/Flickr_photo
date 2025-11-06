@@ -3,6 +3,7 @@ package com.example.flickrphoto.feature.photosearch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.Photo
+import com.example.domain.usecase.GetRecentPhotos
 import com.example.domain.usecase.SearchPhotosByTag
 import com.example.flickrphoto.feature.common.ViewState
 import com.example.flickrphoto.util.SearchPrefsManager
@@ -12,6 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class PhotoSearchViewModel(
+    private val getRecentPhotos: GetRecentPhotos,
     private val searchPhotosByTag: SearchPhotosByTag,
     private val searchPrefsManager: SearchPrefsManager
 ) : ViewModel() {
@@ -28,9 +30,15 @@ class PhotoSearchViewModel(
                 _searchQuery.value = it
                 if (it.isNotBlank()) {
                     searchPhotos(it)
+                } else {
+                    loadRecentPhotos()
                 }
             }
         }
+    }
+
+    fun updateSearchQuery(newQuery: String) {
+        _searchQuery.value = newQuery
     }
 
     fun searchPhotos(tags: String) {
@@ -38,17 +46,32 @@ class PhotoSearchViewModel(
             searchPrefsManager.saveSearchQuery(tags)
             _viewState.value = ViewState.Loading
 
-            searchPhotosByTag(tags = tags)
-                .onSuccess { response ->
-                    _viewState.value = ViewState.Success(response)
-                }
-                .onFailure { exception ->
-                    _viewState.value = ViewState.Error(exception.message ?: "Unknown error")
-                }
+            val result: Result<List<Photo>> = if (tags.isBlank()) {
+                getRecentPhotos()
+            } else {
+                searchPhotosByTag(tags)
+            }
+
+            handleResult(result)
         }
     }
 
-    fun updateSearchQuery(newQuery: String) {
-        _searchQuery.value = newQuery
+    private fun loadRecentPhotos() {
+        viewModelScope.launch {
+            _viewState.value = ViewState.Loading
+            val result = getRecentPhotos()
+            handleResult(result)
+
+        }
+    }
+
+    private fun handleResult(result: Result<List<Photo>>) {
+        result
+            .onSuccess { photos ->
+                _viewState.value = ViewState.Success(photos)
+            }
+            .onFailure { exception ->
+                _viewState.value = ViewState.Error(exception.message ?: "Unknown error")
+            }
     }
 }

@@ -1,6 +1,6 @@
 package com.example.domain.usecase
 
-import com.example.domain.models.PhotosResponse
+import com.example.domain.models.Photo
 import com.example.domain.repo.PhotosRepository
 
 class GetRecentPhotos(
@@ -9,7 +9,5 @@ class GetRecentPhotos(
     suspend operator fun invoke(
         perPage: Int = 20,
         page: Int = 1
-    ): Result<PhotosResponse> {
-        return repository.getRecentPhotos(perPage, page)
-    }
+    ): Result<List<Photo>> = repository.getRecentPhotos(perPage, page).map { response -> response.photos.photoList }
 }
