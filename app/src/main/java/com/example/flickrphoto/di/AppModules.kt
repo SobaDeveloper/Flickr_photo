@@ -1,8 +1,8 @@
 package com.example.flickrphoto.di
 
-import com.example.flickrphoto.feature.photodetails.PhotoDetailViewModel
-import com.example.flickrphoto.feature.photosearch.PhotoSearchViewModel
-import com.example.flickrphoto.util.SearchPrefsManager
+import com.example.photos.details.PhotoDetailViewModel
+import com.example.photos.search.PhotoSearchViewModel
+import com.example.data.local.SearchPrefsManager
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -18,6 +18,6 @@ val dataStoreModule = module {
 }
 
 val viewModelModules = module {
-    viewModelOf(::PhotoSearchViewModel)
     viewModelOf(::PhotoDetailViewModel)
+    viewModelOf(::PhotoSearchViewModel)
 }

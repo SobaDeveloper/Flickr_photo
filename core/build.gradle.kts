@@ -48,8 +48,6 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -61,4 +59,7 @@ dependencies {
     api(libs.moshi)
     api(libs.moshi.kotlin)
     ksp(libs.moshi.kotlin.codegen)
+
+    // Kotlin Serialization
+    api(libs.kotlinx.serialization.json)
 }

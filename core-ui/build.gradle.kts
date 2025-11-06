@@ -1,10 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "com.example.domain"
+    namespace = "com.example.core_ui"
     compileSdk = 36
 
     defaultConfig {
@@ -31,14 +33,36 @@ android {
 
 dependencies {
     api(project(":core"))
-    api(project(":data"))
 
-    implementation(libs.androidx.core.ktx)
+    // Core Android
+    api(libs.androidx.core.ktx)
+    api(libs.androidx.lifecycle.runtime.ktx)
+
+    // Compose
+    api(libs.androidx.activity.compose)
+    api(platform(libs.androidx.compose.bom))
+    api(libs.androidx.ui)
+    api(libs.androidx.ui.graphics)
+    api(libs.androidx.ui.tooling.preview)
+    api(libs.androidx.material3)
+    api(libs.androidx.compose.material.icons.extended)
+
+    // Navigation Compose
+    api(libs.androidx.navigation.compose)
+
+    // ViewModel Compose
+    api(libs.androidx.lifecycle.viewmodel.compose)
+
+    // Koin Compose
+    api(libs.koin.androidx.compose)
+
+    // Glide
+    api(libs.glide.compose)
 
     // Testing
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
     testImplementation(libs.junit)
-    testImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    testImplementation(libs.mockk)
 }

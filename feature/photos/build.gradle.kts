@@ -1,10 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "com.example.data"
+    namespace = "com.example.photos"
     compileSdk = 36
 
     defaultConfig {
@@ -30,21 +32,14 @@ android {
 }
 
 dependencies {
-    api(project(":core"))
+    implementation(project(":core-ui"))
+    api(project(":domain"))
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-
-    // Retrofit
-    api(libs.retrofit)
-    implementation(libs.logging.interceptor)
-    implementation(libs.converter.moshi)
-
-    // Datastore
-    api(libs.androidx.datastore.preferences)
-
-    // Testing
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockwebserver)
+    androidTestImplementation(libs.androidx.espresso.core)
 }
