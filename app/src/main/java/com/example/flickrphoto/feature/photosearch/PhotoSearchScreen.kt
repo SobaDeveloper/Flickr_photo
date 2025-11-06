@@ -15,6 +15,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
@@ -43,10 +44,10 @@ import org.koin.androidx.compose.koinViewModel
 fun PhotoSearchScreen(
     onPhotoClick: (Photo) -> Unit
 ) {
-    val keyboardController = LocalSoftwareKeyboardController.current
     val viewModel: PhotoSearchViewModel = koinViewModel()
+    val searchQuery by viewModel.searchQuery.collectAsStateWithLifecycle()
+    val keyboardController = LocalSoftwareKeyboardController.current
     val viewState by viewModel.viewState.collectAsStateWithLifecycle()
-    var searchQuery by remember { mutableStateOf("") }
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(viewState) {
@@ -62,12 +63,13 @@ fun PhotoSearchScreen(
                 title = {
                     OutlinedTextField(
                         value = searchQuery,
-                        onValueChange = { searchQuery = it },
+                        onValueChange = viewModel::updateSearchQuery,
                         label = { Text(stringResource(R.string.photo_search_app_bar_label)) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(end = Spacing.md),
                         singleLine = true,
+                        textStyle = MaterialTheme.typography.bodyLarge,
                         keyboardOptions = KeyboardOptions(
                             imeAction = ImeAction.Search
                         ),
@@ -79,9 +81,9 @@ fun PhotoSearchScreen(
                         ),
                         trailingIcon = {
                             if (searchQuery.isNotEmpty()) {
-                                IconButton(onClick = { searchQuery = "" }) {
+                                IconButton(onClick = { viewModel.updateSearchQuery("") }) {
                                     Icon(
-                                        imageVector = Icons.Filled.Close,
+                                        imageVector = Icons.Default.Close,
                                         contentDescription = stringResource(R.string.photo_search_clear_content_description)
                                     )
                                 }

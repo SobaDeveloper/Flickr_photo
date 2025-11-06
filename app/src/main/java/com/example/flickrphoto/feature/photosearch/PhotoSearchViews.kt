@@ -32,7 +32,7 @@ fun PhotoGrid(
     onPhotoClick: (Photo) -> Unit,
 ) {
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+        columns = GridCells.Fixed(3),
         horizontalArrangement = Arrangement.spacedBy(Spacing.xs),
         verticalArrangement = Arrangement.spacedBy(Spacing.xs),
         modifier = Modifier.fillMaxSize()
