@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,9 +30,11 @@ import androidx.compose.ui.graphics.Brush.Companion.verticalGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.core.util.DateUtils
+import com.example.core_ui.theme.FlickrPhotoTheme
 import com.example.core_ui.theme.Spacing
 import com.example.domain.models.PhotoDetails
 import com.example.photos.R
@@ -154,7 +157,26 @@ private fun PhotoDetailItem(
             text = value,
             color = Color.White.copy(alpha = 0.7f),
             style = MaterialTheme.typography.bodySmall
-
         )
+    }
+}
+
+@Preview(name = "Photo Detail Item")
+@Composable
+private fun PhotoDetailItemMultiplePreview() {
+    FlickrPhotoTheme {
+        Surface(
+            color = Color.Black,
+            modifier = Modifier.padding(Spacing.md)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(Spacing.xs)
+            ) {
+                PhotoDetailItem(label = "Date:", value = "Nov 6, 2024")
+                PhotoDetailItem(label = "Views:", value = "1,234")
+                PhotoDetailItem(label = "Camera:", value = "Canon EOS R5")
+                PhotoDetailItem(label = "ISO:", value = "400")
+            }
+        }
     }
 }

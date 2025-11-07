@@ -1,4 +1,4 @@
-package com.example.photos.navigation
+package com.example.flickrphoto.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -6,27 +6,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.photos.details.screens.PhotoDetailsScreen
-import com.example.photos.search.PhotoSearchScreen
-import kotlinx.serialization.Serializable
-
-@Serializable
-object SearchScreen
-
-@Serializable
-data class PhotoDetailScreen(
-    val photoId: String,
-    val secret: String = ""
-)
+import com.example.photos.search.screens.PhotoSearchScreen
 
 @Composable
-fun FlickrNavigation(
+fun AppNavGraph(
     navController: NavHostController = rememberNavController(),
 ) {
     NavHost(
         navController = navController,
-        startDestination = SearchScreen
+        startDestination = PhotoSearchScreen
     ) {
-        composable<SearchScreen> {
+        composable<PhotoSearchScreen> {
             PhotoSearchScreen(
                 onPhotoClick = { photo ->
                     navController.navigate(

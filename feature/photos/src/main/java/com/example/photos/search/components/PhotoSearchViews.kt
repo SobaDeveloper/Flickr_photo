@@ -1,4 +1,4 @@
-package com.example.photos.search
+package com.example.photos.search.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

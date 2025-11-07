@@ -1,4 +1,4 @@
-package com.example.photos.search
+package com.example.photos.search.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +24,10 @@ import com.example.domain.models.Photo
 import com.example.photos.R
 import com.example.photos.common.ViewState
 import com.example.core_ui.theme.Spacing
+import com.example.photos.search.components.PhotoGrid
+import com.example.photos.search.components.PhotoSearchBar
+import com.example.photos.search.components.PhotoSearchEmptyState
+import com.example.photos.search.PhotoSearchViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

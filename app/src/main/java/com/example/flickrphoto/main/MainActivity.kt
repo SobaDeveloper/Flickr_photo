@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.photos.navigation.FlickrNavigation
+import com.example.flickrphoto.navigation.AppNavGraph
 import com.example.core_ui.theme.FlickrPhotoTheme
 
 class MainActivity : ComponentActivity() {
@@ -13,7 +13,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FlickrPhotoTheme {
-                FlickrNavigation()
+                AppNavGraph()
             }
         }
     }
