@@ -38,8 +38,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.domain.models.Photo
 import com.example.core_ui.theme.Spacing
+import com.example.domain.models.Photo
 import com.example.photos.R
 
 @Composable
@@ -54,12 +54,12 @@ fun PhotoSearchBar(
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
-        label = { Text(stringResource(R.string.photo_search_app_bar_label)) },
+        placeholder = { Text(stringResource(R.string.photo_search_app_bar_label)) },
+        textStyle = MaterialTheme.typography.bodyLarge,
         modifier = modifier
             .fillMaxWidth()
             .padding(end = Spacing.md),
         singleLine = true,
-        textStyle = MaterialTheme.typography.bodyLarge,
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(
             onSearch = {
@@ -85,7 +85,8 @@ fun PhotoGrid(
     photos: List<Photo>,
     onPhotoClick: (Photo) -> Unit,
     isLoadingMore: Boolean = false,
-    onLoadMore: () -> Unit = {}
+    onLoadMore: () -> Unit = {},
+    loadMoreThreshold: Int = 9
 ) {
     val listState = rememberLazyGridState()
 
@@ -125,8 +126,9 @@ fun PhotoGrid(
         snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
             .collect { lastVisibleIndex ->
                 if (lastVisibleIndex != null &&
-                    lastVisibleIndex >= photos.size - 6 &&
-                    !isLoadingMore) {
+                    lastVisibleIndex >= photos.size - loadMoreThreshold &&
+                    !isLoadingMore
+                ) {
                     onLoadMore()
                 }
             }

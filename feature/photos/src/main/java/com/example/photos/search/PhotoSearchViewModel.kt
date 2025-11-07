@@ -29,7 +29,7 @@ class PhotoSearchViewModel(
     private val _isLoadingMore = MutableStateFlow(false)
     val isLoadingMore: StateFlow<Boolean> = _isLoadingMore.asStateFlow()
 
-    private var currentPage = 1
+    private var currentPage = INDEX_INITIAL_PAGE
     private var canLoadMore = true
     private var currentSearchTags = ""
 
@@ -54,7 +54,7 @@ class PhotoSearchViewModel(
         viewModelScope.launch {
             saveSearchQuery(tags)
             currentSearchTags = tags
-            currentPage = 1
+            currentPage = INDEX_INITIAL_PAGE
             canLoadMore = true
             _viewState.value = ViewState.Loading
 
@@ -99,29 +99,24 @@ class PhotoSearchViewModel(
     private fun handleResult(result: Result<List<Photo>>, isLoadingMore: Boolean) {
         result
             .onSuccess { photos ->
-                if (isLoadingMore) {
-                    val currentPhotos = (_viewState.value as? ViewState.Success)?.data ?: emptyList()
-                    val newPhotos = currentPhotos + photos
-                    _viewState.value = ViewState.Success(newPhotos)
-                    canLoadMore = photos.isNotEmpty()
-                    _isLoadingMore.value = false
-                } else {
-                    _viewState.value = ViewState.Success(photos)
-                    canLoadMore = photos.isNotEmpty()
-                }
+                val currentPhotos = (_viewState.value as? ViewState.Success)?.data.orEmpty()
+                val updatedPhotos = if (isLoadingMore) currentPhotos + photos else photos
+
+                _viewState.value = ViewState.Success(updatedPhotos)
+                canLoadMore = photos.isNotEmpty()
+                _isLoadingMore.value = false
             }
             .onFailure { exception ->
                 if (isLoadingMore) {
                     currentPage--
                     _isLoadingMore.value = false
-                    _viewState.value = ViewState.Error(exception.message ?: "Unknown error")
-                    val currentPhotos = (_viewState.value as? ViewState.Success)?.data
-                    if (currentPhotos != null) {
-                        _viewState.value = ViewState.Success(currentPhotos)
-                    }
                 } else {
                     _viewState.value = ViewState.Error(exception.message ?: "Unknown error")
                 }
             }
+    }
+
+    companion object {
+        const val INDEX_INITIAL_PAGE = 1
     }
 }
