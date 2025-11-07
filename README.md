@@ -40,7 +40,7 @@ lib from google and have your own implementation *
 ## Architecture Overview
 
 ```
-📦 WeatherApp
+📦 Flickr Photo
 ├── 🧩 app             # Main entry point and application class
 │   └── navigation     # Compose destinations and navigation graph.
 │
